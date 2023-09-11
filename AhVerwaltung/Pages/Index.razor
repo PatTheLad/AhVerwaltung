@@ -1,0 +1,131 @@
+﻿@page "/"
+@inject DialogService DialogService
+
+<PageTitle>Anhängerverwaltung</PageTitle>
+
+
+<body style="width:100vw; height:100vh;">
+    <RadzenDataGrid Data="@data" TItem="Vertrag" AllowPaging="true" PageSize="5" AllowSorting="true" AllowFiltering="true" AllowColumnResize="true"
+                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Simple">
+        <EmptyTemplate>
+            <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem; height:100%">No records to display.</p>
+        </EmptyTemplate>
+        <HeaderTemplate>
+            <RadzenRow>
+                <RadzenColumn Style="width:99vw; margin-right:1vw">
+                    <div style="float:right">
+                        <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="person_add" Click="NeuerKunde" Text="Neuer Kunde" />
+                        <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="post_add" Click="NeuerVertrag" Text="Neuer Vertrag"/>
+@*                        <RadzenDropDown Value="@selectedKunde" ValueChanged="@(x => selectedKunde = x)" TValue="string" Data="@kunden"></RadzenDropDown>*@
+                    </div>
+                </RadzenColumn>
+            </RadzenRow>
+        </HeaderTemplate>
+        <Columns>
+            <RadzenDataGridColumn TItem="Vertrag" Property="VergragsNr" Title="VertragsNr">
+                <Template>
+                    @context.VertragsNr
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Vertrag" Property="Anhänger" Title="Anhänger">
+                <Template>
+                    @context.Anhänger.Kennzeichen
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Vertrag" Property="Rückgabeformular" Title="Rückgabeformular">
+                <Template>
+                    @context.Rückgabeformular.RückgabeFormularNr
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Vertrag" Property="Vertragskunden" Title="Vertragskunden">
+                <Template>
+                    @context.Vertragskunden.Kurzname
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
+</body>
+
+
+@code{
+
+    private List<Vertrag> data = new();
+    private string[] kunden = new string[] { "Test", "Obama", "Pietsch", "Bill Gates", "Mark Zuck", "Cahrl Mags" };
+    private string selectedKunde = "Test";
+
+    protected override async Task OnInitializedAsync()
+    {
+        data.Add(new Vertrag()
+                {
+                    VertragsNr = 1,
+                    Anhänger = new Anhänger() { Kennzeichen = "SI SI 21" },
+                    Rückgabeformular = new Rückgabeformular() { RückgabeFormularNr = 1 },
+                    Vertragskunden = new Kunden() { Kdnr = 1, Kurzname = "Test", Vorname = "Test", Nachname = "Test", Geburtsdatum = DateTime.Now.AddYears(-33) }
+                });
+        data.Add(new Vertrag()
+                {
+                    VertragsNr = 3,
+                    Anhänger = new Anhänger() { Kennzeichen = "SI SI 123" },
+                    Rückgabeformular = new Rückgabeformular() { RückgabeFormularNr = 3 },
+                    Vertragskunden = new Kunden() { Kdnr = 2, Kurzname = "Gates", Vorname = "Bill", Nachname = "Gates", Geburtsdatum = DateTime.Now.AddYears(-123) }
+                });
+        data.Add(new Vertrag()
+                {
+                    VertragsNr = 1234,
+                    Anhänger = new Anhänger() { Kennzeichen = "SI SI 3451" },
+                    Rückgabeformular = new Rückgabeformular() { RückgabeFormularNr = 1239 },
+                    Vertragskunden = new Kunden() { Kdnr = 3, Kurzname = "Obama", Vorname = "Barack", Nachname = "Obama", Geburtsdatum = DateTime.Now.AddYears(-65) }
+                });
+    }
+
+    private async Task NeuerVertrag()
+    {
+        await DialogService.OpenAsync("Neuer Vertrag", ds =>
+        @<div>
+            Test
+        </div>, new DialogOptions());
+    }
+
+    private async Task NeuerKunde()
+    {
+        await DialogService.OpenAsync("Neuer Kunde", ds =>
+        @<div>
+            Test
+        </div>, new DialogOptions());
+    }
+
+    private async Task NeuesRückgabeFormular()
+    {
+        await DialogService.OpenAsync("Neues Rückgabeformulr", ds =>
+        @<div>
+            Test
+        </div>, new DialogOptions());
+    }
+
+    public class Vertrag
+    {
+        public int VertragsNr { get; set; }
+        public Anhänger Anhänger { get; set; }
+        public Rückgabeformular Rückgabeformular { get; set; }
+        public Kunden Vertragskunden { get; set; }
+    }
+
+    public class Kunden
+    {
+        public int Kdnr { get; set; }
+        public string Kurzname { get; set; }
+        public string Vorname { get; set; }
+        public string Nachname { get; set; }
+        public DateTime Geburtsdatum { get; set; }
+    }
+
+    public class Anhänger
+    {
+        public string Kennzeichen { get; set; }
+    }
+
+    public class Rückgabeformular
+    {
+        public int RückgabeFormularNr { get; set; }
+    }
+}
