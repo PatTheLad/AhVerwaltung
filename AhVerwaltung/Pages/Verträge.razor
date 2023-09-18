@@ -21,15 +21,14 @@
     </HeaderTemplate>
     <Columns>
         <RadzenDataGridColumn TItem="Vertrag" Property="VertragsNr" Title="VertragsNr" />
-        <RadzenDataGridColumn TItem="Vertrag" Property="Anhänger.Kennzeichen" Title="Anhänger" />
-        <RadzenDataGridColumn TItem="Vertrag" Property="Rückgabeformular.RückgabeFormularNr" Title="Rückgabeformular" />
-        <RadzenDataGridColumn TItem="Vertrag" Property="Vertragskunden.Kurzname" Title="Vertragskunden" />
+        <RadzenDataGridColumn TItem="Vertrag" Property="AngängerNr" Title="AngängerNr" />
+        <RadzenDataGridColumn TItem="Vertrag" Property="RückgabeformularNr" Title="RückgabeformularNr" />
+        <RadzenDataGridColumn TItem="Vertrag" Property="Kdnr" Title="Kdnr" />
     </Columns>
 </RadzenDataGrid>
 
 
 @code{
-    private bool vetragsModus = true;
     private List<Vertrag> dataVerträge = new();
     private string selectedKunde = "Test";
 
@@ -38,23 +37,9 @@
         dataVerträge.Add(new Vertrag()
                 {
                     VertragsNr = 1,
-                    Anhänger = new Model.Anhänger() { Kennzeichen = "SI SI 21" },
-                    Rückgabeformular = new Rückgabeformular() { RückgabeFormularNr = 1 },
-                    Vertragskunden = new Model.Kunden() { Kdnr = 1, Kurzname = "Test", Vorname = "Test", Nachname = "Test", Geburtsdatum = DateTime.Now.AddYears(-33) }
-                });
-        dataVerträge.Add(new Vertrag()
-                {
-                    VertragsNr = 3,
-                    Anhänger = new Model.Anhänger() { Kennzeichen = "SI SI 123" },
-                    Rückgabeformular = new Rückgabeformular() { RückgabeFormularNr = 3 },
-                    Vertragskunden = new Model.Kunden() { Kdnr = 2, Kurzname = "Gates", Vorname = "Bill", Nachname = "Gates", Geburtsdatum = DateTime.Now.AddYears(-123) }
-                });
-        dataVerträge.Add(new Vertrag()
-                {
-                    VertragsNr = 1234,
-                    Anhänger = new Model.Anhänger() { Kennzeichen = "SI SI 3451" },
-                    Rückgabeformular = new Rückgabeformular() { RückgabeFormularNr = 1239 },
-                    Vertragskunden = new Model.Kunden() { Kdnr = 3, Kurzname = "Obama", Vorname = "Barack", Nachname = "Obama", Geburtsdatum = DateTime.Now.AddYears(-65) }
+                    AngängerNr = 1,
+                    RückgabeformularNr = 1,
+                    Kdnr = 1
                 });
     }
 
@@ -62,15 +47,15 @@
     {
         await DialogService.OpenAsync("Neuer Vertrag", ds =>
         @<div>
-            Test
-        </div>, new DialogOptions());
-    }
-
-    private async Task NeuesRückgabeFormular()
-    {
-        await DialogService.OpenAsync("Neues Rückgabeformulr", ds =>
-        @<div>
-            Test
+            <RadzenFormField Text="Vertrags Nr" Style="width:100%;">
+                <RadzenTextBox Disabled=true Value="40" Style="width:100%;" />
+            </RadzenFormField>
+            <RadzenFormField Text="Anhänger" Style="width:100%;">
+                <RadzenTextBox Style="width:100%;" />
+            </RadzenFormField>
+            <RadzenFormField Text="Kunden" Style="width:100%;">
+                <RadzenTextBox Style="width:100%;" />
+            </RadzenFormField>
         </div>, new DialogOptions());
     }
 }
