@@ -1,0 +1,40 @@
+﻿@page "/kunden"
+@inject DialogService DialogService
+
+<PageTitle>Kunden</PageTitle>
+
+<RadzenDataGrid Data="@dataKunden" TItem="Kunden" AllowPaging="true" PageSize="20" AllowSorting="true" AllowFiltering="true" AllowColumnResize="true"
+                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Simple">
+    <EmptyTemplate>
+        <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem; height:100%">No records to display.</p>
+    </EmptyTemplate>
+    <HeaderTemplate>
+        <RadzenRow>
+            <RadzenColumn style="width:99vw;">
+                <div style="float:right">
+                    <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="person_add" Click="NeuerKunde" Text="Neuer Kunde" />
+                </div>
+            </RadzenColumn>
+        </RadzenRow>
+    </HeaderTemplate>
+    <Columns>
+        <RadzenDataGridColumn TItem="Kunden" Property="Kdnr" Title="Kdnr" />
+        <RadzenDataGridColumn TItem="Kunden" Property="Kurzname" Title="Kurzname" />
+        <RadzenDataGridColumn TItem="Kunden" Property="Vorname" Title="Vorname" />
+        <RadzenDataGridColumn TItem="Kunden" Property="Nachname" Title="Nachname" />
+        <RadzenDataGridColumn TItem="Kunden" Property="Geburtsdatum" Title="Geburtsdatum" />
+    </Columns>
+</RadzenDataGrid>
+
+@code {
+    private List<Kunden> dataKunden = new();
+    private string[] kunden = new string[] { "Test", "Obama", "Pietsch", "Bill Gates", "Mark Zuck", "Cahrl Mags" };
+
+    private async Task NeuerKunde()
+    {
+        await DialogService.OpenAsync("Neuer Kunde", ds =>
+    @<div>
+        Test
+    </div>, new DialogOptions());
+    }
+}
