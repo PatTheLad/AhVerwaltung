@@ -1,7 +1,75 @@
 ﻿@page "/anhänger"
+@inject DialogService DialogService
 
 <PageTitle>Anhänger</PageTitle>
 
-@code {
+<RadzenDataGrid Data="@anhängerListe" TItem="Model.Anhänger" AllowPaging="true" PageSize="20" AllowSorting="true" AllowFiltering="true" AllowColumnResize="true"
+            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Simple">
+    <EmptyTemplate>
+        <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem; height:100%">No records to display.</p>
+    </EmptyTemplate>
+    <HeaderTemplate>
+        <RadzenRow>
+            <RadzenColumn style="width:99vw;">
+                <div style="float:right">
+                    <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="note_add" Click="NeuerAnhänger" Text="Neuer Anhänger" />
+                </div>
+            </RadzenColumn>
+        </RadzenRow>
+    </HeaderTemplate>
+    <Columns>
+        <RadzenDataGridColumn TItem="Model.Anhänger" Property="Marke" Title="Marke" />
+        <RadzenDataGridColumn TItem="Model.Anhänger" Property="Modell" Title="Modell" />
+        <RadzenDataGridColumn TItem="Model.Anhänger" Property="Kennzeichen" Title="Kennzeichen" />
+    </Columns>
+</RadzenDataGrid>
 
+@code {
+    private List<Model.Anhänger> anhängerListe = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        anhängerListe.Add(new Model.Anhänger()
+            {
+                Marke = "Hornbach",
+                Modell = "P187",
+                Kennzeichen = "OE-AB-1877"
+            });
+
+        anhängerListe.Add(new Model.Anhänger()
+        {
+            Marke = "ATU",
+            Modell = "AZ 123",
+            Kennzeichen = "Si-AH-6454"
+        });
+
+        anhängerListe.Add(new Model.Anhänger()
+        {
+            Marke = "OBI",
+            Modell = "D3000",
+            Kennzeichen = "OE-QW-69"
+        });
+    }
+
+    private async Task NeuerAnhänger()
+    {
+        await DialogService.OpenAsync("Neuer Anhänger", ds =>
+        @<div>
+        <RadzenColumn Size="12" SizeSM="6">
+            <RadzenStack>
+                <RadzenFormField Text="Marke">
+                    <RadzenTextBox Disabled=true Value="Obi" Style="width: 100%;" />
+                </RadzenFormField>
+                <RadzenFormField Text="Modell">
+                    <RadzenTextBox Disabled=true Value="P123" Style="width: 100%;" />
+                </RadzenFormField>
+                <RadzenFormField Text="Kennzeichen">
+                    <RadzenTextBox Disabled=true Value="OE-AA-123" Style="width: 100%;" />
+                </RadzenFormField>
+                <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="note_add" Text="Hinzufügen" />
+            </RadzenStack>
+        </RadzenColumn>
+    </div>
+    , new DialogOptions());
+    }
 }
