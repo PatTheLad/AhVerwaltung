@@ -34,7 +34,22 @@
     {
         await DialogService.OpenAsync("Neuer Kunde", ds =>
     @<div>
-        Test
+        <RadzenFormField Text="Kundennummer" Style="width: 100%;">
+            <RadzenTextBox Disabled=true Value="123" Style="width: 100%;" />
+        </RadzenFormField>
+         <RadzenFormField Text="Kurzname" Style="width: 100%;">
+            <RadzenTextBox Style="width: 100%;" />
+        </RadzenFormField>
+         <RadzenFormField Text="Vorname" Style="width: 100%;">
+            <RadzenTextBox Style="width: 100%;" />
+        </RadzenFormField>
+         <RadzenFormField Text="Nachname" Style="width: 100%;">
+            <RadzenTextBox Style="width: 100%;" />
+        </RadzenFormField>
+         <RadzenFormField Text="Geburtsdatum" Style="width: 100%;">
+            <RadzenTextBox Style="width: 100%;" />
+        </RadzenFormField>
+         <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="person_add" Text="Kunde hinzufügen" Style="width: 100%;"/>
     </div>, new DialogOptions());
     }
 }
