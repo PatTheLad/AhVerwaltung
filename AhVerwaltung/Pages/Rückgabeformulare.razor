@@ -1,7 +1,79 @@
 ﻿@page "/rückgabeformulare"
+@using AhVerwaltung.Model
+@inject DialogService DialogService
 
 <PageTitle>Rückgabeformulare</PageTitle>
 
+<RadzenDataGrid Data="@dataRückgabe" TItem="Model.Rückgabeformular" AllowPaging="true" PageSize="20" AllowSorting="true" AllowFiltering="true" AllowColumnResize="true"
+                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Simple">
+    <EmptyTemplate>
+        <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem; height:100%">No records to display.</p>
+    </EmptyTemplate>
+    <HeaderTemplate>
+        <RadzenRow>
+            <RadzenColumn style="width:99vw;">
+                <div style="float:right">
+                    <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="note_add" Click="NeuesRückgabeFormular" Text="Neues Rückgabeformular" />
+                </div>
+            </RadzenColumn>
+        </RadzenRow>
+    </HeaderTemplate>
+    <Columns>
+        <RadzenDataGridColumn TItem="Model.Rückgabeformular" Property="RückgabeFormularNr" Title="RückgabeformularNr" />
+        <RadzenDataGridColumn TItem="Model.Rückgabeformular" Property="Anhänger.Kennzeichen" Title="Anhänger" />
+        <RadzenDataGridColumn TItem="Model.Rückgabeformular" Property="Rückgabeformular.RückgabeFormularNr" Title="Vertragsnr" />
+        <RadzenDataGridColumn TItem="Model.Rückgabeformular" Property="Vertragskunden.Kurzname" Title="Vertragskunden" />
+    </Columns>
+</RadzenDataGrid>
+
 @code {
+    private bool rückgabeModus = true;
+    private List<Model.Rückgabeformular> dataRückgabe = new();
+    private string selectedKunde = "Test";
+
+    protected override async Task OnInitializedAsync()
+    {
+        dataRückgabe.Add(new Model.Rückgabeformular()
+            {
+                RückgabeFormularNr = 1,
+                Anhänger = new Model.Anhänger() { Kennzeichen = "SI SI 21" },
+                Vertrag = new Model.Vertrag() { VertragsNr = 1 },
+                Vertragskunden = new Model.Kunden() { Kdnr = 1, Kurzname = "Test", Vorname = "Test", Nachname = "Test", Geburtsdatum = DateTime.Now.AddYears(-33) }
+            });
+        dataRückgabe.Add(new Model.Rückgabeformular()
+            {
+                RückgabeFormularNr = 3,
+                Anhänger = new Model.Anhänger() { Kennzeichen = "SI SI 123" },
+                Vertrag = new Model.Vertrag() { VertragsNr = 3 },
+                Vertragskunden = new Model.Kunden() { Kdnr = 2, Kurzname = "Gates", Vorname = "Bill", Nachname = "Gates", Geburtsdatum = DateTime.Now.AddYears(-123) }
+            });
+        dataRückgabe.Add(new Model.Rückgabeformular()
+            {
+                RückgabeFormularNr = 1234,
+                Anhänger = new Model.Anhänger() { Kennzeichen = "SI SI 3451" },
+                Vertrag = new Model.Vertrag() { VertragsNr = 1239 },
+                Vertragskunden = new Model.Kunden() { Kdnr = 3, Kurzname = "Obama", Vorname = "Barack", Nachname = "Obama", Geburtsdatum = DateTime.Now.AddYears(-65) }
+            });
+    }
+
+    private async Task NeuesRückgabeFormular()
+    {
+        await DialogService.OpenAsync("Neues Rückgabeformular", ds =>
+    @<div>
+        <RadzenFormField Text="Rückgabeformular" Style="width: 100%;">
+            <RadzenTextBox Value="123" Style="width: 100%;" />
+        </RadzenFormField>
+        <RadzenFormField Text="Anhänger" Style="width: 100%;">
+            <RadzenTextBox Style="width: 100%;" />
+        </RadzenFormField>
+        <RadzenFormField Text="Vertrag" Style="width: 100%;">
+            <RadzenTextBox Style="width: 100%;" />
+        </RadzenFormField>
+        <RadzenFormField Text="Vertragskunden" Style="width: 100%;">
+            <RadzenTextBox Style="width: 100%;" />
+        </RadzenFormField>
+        <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="note_add" Text="Bestätigen" />
+    </div>, new DialogOptions());
+    }
 
 }
