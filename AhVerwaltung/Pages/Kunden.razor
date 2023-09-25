@@ -3,7 +3,7 @@
 
 <PageTitle>Kunden</PageTitle>
 
-<RadzenDataGrid Data="@dataKunden" TItem="Kunden" AllowPaging="true" PageSize="20" AllowSorting="true" AllowFiltering="true" AllowColumnResize="true"
+<RadzenDataGrid Data="@dataKunden" TItem="Model.Kunden" AllowPaging="true" PageSize="20" AllowSorting="true" AllowFiltering="true" AllowColumnResize="true"
                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Simple">
     <EmptyTemplate>
         <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem; height:100%">No records to display.</p>
@@ -18,22 +18,31 @@
         </RadzenRow>
     </HeaderTemplate>
     <Columns>
-        <RadzenDataGridColumn TItem="Kunden" Property="Kdnr" Title="Kdnr" />
-        <RadzenDataGridColumn TItem="Kunden" Property="Kurzname" Title="Kurzname" />
-        <RadzenDataGridColumn TItem="Kunden" Property="Vorname" Title="Vorname" />
-        <RadzenDataGridColumn TItem="Kunden" Property="Nachname" Title="Nachname" />
-        <RadzenDataGridColumn TItem="Kunden" Property="Geburtsdatum" Title="Geburtsdatum" />
+        <RadzenDataGridColumn TItem="Model.Kunden" Property="Kdnr" Title="Kdnr" />
+        <RadzenDataGridColumn TItem="Model.Kunden" Property="Kurzname" Title="Kurzname" />
+        <RadzenDataGridColumn TItem="Model.Kunden" Property="Vorname" Title="Vorname" />
+        <RadzenDataGridColumn TItem="Model.Kunden" Property="Nachname" Title="Nachname" />
+        <RadzenDataGridColumn TItem="Model.Kunden" Property="Geburtsdatum" Title="Geburtsdatum" FormatString="{0:d}"/>
     </Columns>
 </RadzenDataGrid>
 
 @code {
-    private List<Kunden> dataKunden = new();
+    private List<Model.Kunden> dataKunden = new();
     private string[] kunden = new string[] { "Test", "Obama", "Pietsch", "Bill Gates", "Mark Zuck", "Cahrl Mags" };
+
+    protected override async Task OnInitializedAsync()
+    {
+        Data.DataKunden dk = new Data.DataKunden();
+        dataKunden = dk.GetKunden();
+
+    }
 
     private async Task NeuerKunde()
     {
         await DialogService.OpenAsync("Neuer Kunde", ds =>
     @<div>
+    <RadzenColumn Size="12" SizeSM="6">
+            <RadzenStack>
         <RadzenFormField Text="Kundennummer" Style="width: 100%;">
             <RadzenTextBox Disabled=true Value="123" Style="width: 100%;" />
         </RadzenFormField>
@@ -47,9 +56,11 @@
             <RadzenTextBox Style="width: 100%;" />
         </RadzenFormField>
          <RadzenFormField Text="Geburtsdatum" Style="width: 100%;">
-            <RadzenTextBox Style="width: 100%;" />
+            <RadzenDatePicker TValue="DateTime" Style="width: 100%;" />
         </RadzenFormField>
-         <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="person_add" Text="Kunde hinzufügen" Style="width: 100%;"/>
+         <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="person_add" Text="Kunde hinzufügen" Style="width: 100%;" Click="ds.Close"/>
+          </RadzenStack>
+        </RadzenColumn>
     </div>, new DialogOptions());
     }
 }
