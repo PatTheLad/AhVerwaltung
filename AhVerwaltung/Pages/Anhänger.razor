@@ -29,26 +29,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        anhängerListe.Add(new Model.Anhänger()
-            {
-                Marke = "Hornbach",
-                Modell = "P187",
-                Kennzeichen = "OE-AB-1877"
-            });
-
-        anhängerListe.Add(new Model.Anhänger()
-        {
-            Marke = "ATU",
-            Modell = "AZ 123",
-            Kennzeichen = "Si-AH-6454"
-        });
-
-        anhängerListe.Add(new Model.Anhänger()
-        {
-            Marke = "OBI",
-            Modell = "D3000",
-            Kennzeichen = "OE-QW-69"
-        });
+        anhängerListe = Data.Anhänger.GetAnhänger();
     }
 
     private async Task NeuerAnhänger()
@@ -58,15 +39,15 @@
         <RadzenColumn Size="12" SizeSM="6">
             <RadzenStack>
                 <RadzenFormField Text="Marke">
-                    <RadzenTextBox Disabled=true Value="Obi" Style="width: 100%;" />
+                    <RadzenTextBox Value="Obi" Style="width: 100%;" />
                 </RadzenFormField>
                 <RadzenFormField Text="Modell">
-                    <RadzenTextBox Disabled=true Value="P123" Style="width: 100%;" />
+                    <RadzenTextBox Value="P123" Style="width: 100%;" />
                 </RadzenFormField>
                 <RadzenFormField Text="Kennzeichen">
-                    <RadzenTextBox Disabled=true Value="OE-AA-123" Style="width: 100%;" />
+                    <RadzenTextBox Value="OE-AA-123" Style="width: 100%;" />
                 </RadzenFormField>
-                <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="note_add" Text="Hinzufügen" />
+                <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="note_add" Text="Hinzufügen" Click="ds.Close" />
             </RadzenStack>
         </RadzenColumn>
     </div>
