@@ -1,5 +1,6 @@
 ﻿@page "/rückgabeformulare"
 @using AhVerwaltung.Model
+@using AhVerwaltung.Data
 @inject DialogService DialogService
 
 <PageTitle>Rückgabeformulare</PageTitle>
@@ -33,46 +34,33 @@
 
     protected override async Task OnInitializedAsync()
     {
-        dataRückgabe.Add(new Model.Rückgabeformular()
-            {
-                RückgabeFormularNr = 1,
-                Anhänger = new Model.Anhänger() { Kennzeichen = "SI SI 21" },
-                Vertrag = new Model.Vertrag() { VertragsNr = 1 },
-                Vertragskunden = new Model.Kunden() { Kdnr = 1, Kurzname = "Test", Vorname = "Test", Nachname = "Test", Geburtsdatum = DateTime.Now.AddYears(-33) }
-            });
-        dataRückgabe.Add(new Model.Rückgabeformular()
-            {
-                RückgabeFormularNr = 3,
-                Anhänger = new Model.Anhänger() { Kennzeichen = "SI SI 123" },
-                Vertrag = new Model.Vertrag() { VertragsNr = 3 },
-                Vertragskunden = new Model.Kunden() { Kdnr = 2, Kurzname = "Gates", Vorname = "Bill", Nachname = "Gates", Geburtsdatum = DateTime.Now.AddYears(-123) }
-            });
-        dataRückgabe.Add(new Model.Rückgabeformular()
-            {
-                RückgabeFormularNr = 1234,
-                Anhänger = new Model.Anhänger() { Kennzeichen = "SI SI 3451" },
-                Vertrag = new Model.Vertrag() { VertragsNr = 1239 },
-                Vertragskunden = new Model.Kunden() { Kdnr = 3, Kurzname = "Obama", Vorname = "Barack", Nachname = "Obama", Geburtsdatum = DateTime.Now.AddYears(-65) }
-            });
+        foreach(Rückgabeformular rückgabe in RückgabeformularData.GetRückgabeformular())
+        {
+        dataRückgabe.Add(rückgabe);
+        }
     }
 
     private async Task NeuesRückgabeFormular()
     {
         await DialogService.OpenAsync("Neues Rückgabeformular", ds =>
     @<div>
-        <RadzenFormField Text="Rückgabeformular" Style="width: 100%;">
-            <RadzenTextBox Value="123" Style="width: 100%;" />
-        </RadzenFormField>
-        <RadzenFormField Text="Anhänger" Style="width: 100%;">
-            <RadzenTextBox Style="width: 100%;" />
-        </RadzenFormField>
-        <RadzenFormField Text="Vertrag" Style="width: 100%;">
-            <RadzenTextBox Style="width: 100%;" />
-        </RadzenFormField>
-        <RadzenFormField Text="Vertragskunden" Style="width: 100%;">
-            <RadzenTextBox Style="width: 100%;" />
-        </RadzenFormField>
-        <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="note_add" Text="Bestätigen" />
+        <RadzenColumn Size="12" SizeSM="6">
+            <RadzenStack>
+                <RadzenFormField Text="Rückgabeformular" Style="width: 100%;">
+                    <RadzenTextBox Value="123" Style="width: 100%;" />
+                </RadzenFormField>
+                <RadzenFormField Text="Anhänger" Style="width: 100%;">
+                    <RadzenTextBox Style="width: 100%;" />
+                </RadzenFormField>
+                <RadzenFormField Text="Vertrag" Style="width: 100%;">
+                    <RadzenTextBox Style="width: 100%;" />
+                </RadzenFormField>
+                <RadzenFormField Text="Vertragskunden" Style="width: 100%;">
+                    <RadzenTextBox Style="width: 100%;" />
+                </RadzenFormField>
+                <RadzenButton ButtonStyle="ButtonStyle.Success" Click="ds.Close" Icon="note_add" Text="Bestätigen" />
+            </RadzenStack>
+        </RadzenColumn>
     </div>, new DialogOptions());
     }
 
