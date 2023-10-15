@@ -34,7 +34,7 @@
     {
         Data.DataKunden dk = new Data.DataKunden();
         dataKunden = dk.GetKunden();
-
+        await Task.CompletedTask;
     }
 
     private async Task NeuerKunde()

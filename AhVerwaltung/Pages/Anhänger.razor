@@ -1,5 +1,6 @@
 ﻿@page "/anhänger"
 @inject DialogService DialogService
+@using AhVerwaltung.Data
 
 <PageTitle>Anhänger</PageTitle>
 
@@ -29,7 +30,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        anhängerListe = Data.Anhänger.GetAnhänger();
+        anhängerListe = AnhängerData.GetAnhänger();
+        await Task.CompletedTask;
     }
 
     private async Task NeuerAnhänger()

@@ -36,8 +36,9 @@
     {
         foreach(Rückgabeformular rückgabe in RückgabeformularData.GetRückgabeformular())
         {
-        dataRückgabe.Add(rückgabe);
+            dataRückgabe.Add(rückgabe);
         }
+        await Task.CompletedTask;
     }
 
     private async Task NeuesRückgabeFormular()

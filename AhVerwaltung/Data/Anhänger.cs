@@ -1,6 +1,6 @@
 ﻿namespace AhVerwaltung.Data
 {
-    public class Anhänger
+    public class AnhängerData
     {
         private static readonly List<string> Marken = new() { "Hornbach", "ATU", "OBI" };
 

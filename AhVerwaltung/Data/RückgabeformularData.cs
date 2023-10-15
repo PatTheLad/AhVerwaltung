@@ -7,7 +7,7 @@ namespace AhVerwaltung.Data
         Rückgabeformular rückgabeformular1 = new Rückgabeformular()
         {
             RückgabeFormularNr = 1,
-            Anhänger = new Anhänger() { Kennzeichen = "" },
+            Anhänger = new Model.Anhänger() { Kennzeichen = "" },
             Vertrag = new Vertrag() { VertragsNr = 1 },
             Vertragskunden = new Kunden() { Kurzname = "BGa" }
         };

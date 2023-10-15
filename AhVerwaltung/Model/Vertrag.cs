@@ -6,6 +6,6 @@ namespace AhVerwaltung.Model
         public int VertragsNr { get; set; }
         public int Kdnr { get; set; }
         public int RückgabeformularNr { get; set; }
-        public int AngängerNr { get; set; }
+        public int AnhängerNr { get; set; }
     }
 }

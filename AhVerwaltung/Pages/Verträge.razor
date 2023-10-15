@@ -1,5 +1,6 @@
 ﻿@page "/verträge"
 @using AhVerwaltung.Model
+@using AhVerwaltung.Data
 @inject DialogService DialogService
 
 <PageTitle>Anhängerverwaltung</PageTitle>
@@ -21,7 +22,7 @@
     </HeaderTemplate>
     <Columns>
         <RadzenDataGridColumn TItem="Vertrag" Property="VertragsNr" Title="VertragsNr" />
-        <RadzenDataGridColumn TItem="Vertrag" Property="AngängerNr" Title="AngängerNr" />
+        <RadzenDataGridColumn TItem="Vertrag" Property="AnhängerNr" Title="AnhängerNr" />
         <RadzenDataGridColumn TItem="Vertrag" Property="RückgabeformularNr" Title="RückgabeformularNr" />
         <RadzenDataGridColumn TItem="Vertrag" Property="Kdnr" Title="Kdnr" />
     </Columns>
@@ -34,13 +35,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        dataVerträge.Add(new Vertrag()
-                {
-                    VertragsNr = 1,
-                    AngängerNr = 1,
-                    RückgabeformularNr = 1,
-                    Kdnr = 1
-                });
+        VerträgeData verträgeData = new();
+        dataVerträge = verträgeData.GetVerträge(50);
+        await Task.CompletedTask;
     }
 
     private async Task NeuerVertrag()
