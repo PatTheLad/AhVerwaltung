@@ -1,5 +1,4 @@
 ﻿using AhVerwaltung.Model;
-using AhVerwaltung.Pages;
 
 namespace AhVerwaltung.Data
 {
@@ -12,7 +11,16 @@ namespace AhVerwaltung.Data
             int count = 0;
             while(anzahl > count)
             {
-                tmpList.Add(new Vertrag() { VertragsNr = rndm.Next(1, 999), Kdnr = rndm.Next(1, 999), RückgabeformularNr = rndm.Next(1, 999), AnhängerNr = rndm.Next(1, 999) });
+                int vertragsdauer = rndm.Next(1, 2000);
+                tmpList.Add(new Vertrag() { 
+                    VertragsNr = count+1, 
+                    Kdnr = rndm.Next(1, 999), 
+                    RückgabeformularNr = rndm.Next(1, 999), 
+                    AnhängerNr = rndm.Next(1, 999), 
+                    AbschlussDatum = DateTime.Now.AddDays(-rndm.Next(1, 3000)),
+                    Vertragsdauer = vertragsdauer,
+                    Preis = rndm.Next(5, 20) * vertragsdauer
+                });
                 count++;
             }
             return tmpList;

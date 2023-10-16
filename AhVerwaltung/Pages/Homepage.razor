@@ -1,7 +1,103 @@
 ﻿@page "/"
+@using AhVerwaltung.Data
 
 <PageTitle>Home</PageTitle>
 
+<RadzenCard Style="height:25%">
+    <ApexChart TItem="Summen"
+           Title="Verträge abgeschlossen" Height="@("100%")" Width="@("100%")">
+        <ApexPointSeries TItem="Summen"
+                Items="liste"
+                SeriesType="@SeriesType.Area"
+                Name="Verträge abgeschlossen"
+                YValue="@(e => e.sum)"
+                XValue="@(e => e.year)"
+                OrderBy="e=>e.X"/>
+    </ApexChart>
+</RadzenCard>
+<RadzenCard Style="height:25%">
+    <ApexChart TItem="Summen"
+           Title="Rückgabeformulare" Height="@("100%")" Width="@("100%")">
+        <ApexPointSeries TItem="Summen"
+                Items="liste"
+                SeriesType="@SeriesType.Area"
+                Name="Gross Value"
+                YValue="@(e => e.sum)"
+                XValue="@(e => e.year)"
+                OrderBy="e=>e.X"/>
+    </ApexChart>
+</RadzenCard>
+<RadzenRow Gap="0" Style="height:50%">
+    <RadzenCard Style="width:50%; height:100%">
+        <ApexChart TItem="Summen" XAxisType=XAxisType.Category
+               Title="Umsatz" Height="@("100%")" Width="@("100%")">
+            <ApexPointSeries TItem="Summen"
+                    Items="umsätze"
+                    SeriesType="@SeriesType.Bar"
+                    Name="Umsatz"
+                    YValue="@(e => e.sum)"
+                    XValue="@(e => e.year.ToString())"
+                    OrderBy="e=>e.X"/>
+        </ApexChart>
+    </RadzenCard>
+    <RadzenCard Style="width:50%; height:100%">
+        <ApexChart TItem="Summen"
+               Title="Kapazitäten" Height="@("100%")" Width="@("100%")">
+            <ApexPointSeries TItem="Summen"
+                    Items="kapazitäten"
+                    SeriesType="@SeriesType.Bar"
+                    Name="Kapazität"
+                    YValue="@(e => e.sum)"
+                    XValue="@(e => e.year.ToString())"
+                    OrderBy="e=>e.X"/>
+            <ApexPointSeries TItem="Summen"
+                    Items="liste"
+                    SeriesType="@SeriesType.Bar"
+                    Name="Verbraucht"
+                    YValue="@(e => e.sum)"
+                    XValue="@(e => e.year.ToString())"
+                    OrderBy="e=>e.X"/>
+        </ApexChart>
+    </RadzenCard>
+</RadzenRow>
 
-Tach
+@code{
+    private List<Summen> liste = new();
+    private List<Summen> umsätze = new();
+    private List<Summen> kapazitäten = new();
+    private List<Summen> rückgabeFormulare = new();
+    private class Summen
+    {
+        public int year { get; set; }
+        public int sum { get; set; }
+    }
 
+    protected override void OnInitialized()
+    {
+        VerträgeData data = new();
+        List<Model.Vertrag> verträge = data.GetVerträge(200);
+        Random rndm = new();
+        foreach(int tmpYear in GetYearList(verträge))
+        {
+            rückgabeFormulare.Add(new Summen { year = tmpYear, sum = verträge.Where(x => (x.AbschlussDatum.AddDays(x.Vertragsdauer).Year) == tmpYear).Count()});
+            umsätze.Add(new Summen { year = tmpYear, sum = verträge.Where(x => x.AbschlussDatum.Year == tmpYear).Select(x => x.Preis).Sum()});
+            liste.Add(new Summen { year = tmpYear, sum = verträge.Where(x => x.AbschlussDatum.Year == tmpYear).Count() });
+            kapazitäten.Add(new Summen { year = tmpYear, sum = rndm.Next(30, 35)});
+        }
+        umsätze.OrderBy(x=> x.year);
+        base.OnInitialized();
+    }
+
+    private List<int> GetYearList(List<Model.Vertrag> verträge)
+    {
+        List<int> tmpList = new();
+        foreach(Model.Vertrag tmpVertrag in verträge)
+        {
+            if(tmpList.Where(x=> x == tmpVertrag.AbschlussDatum.Year).Count() == 0)
+            {
+                tmpList.Add(tmpVertrag.AbschlussDatum.Year);
+            }
+        }
+        return tmpList;
+    }
+}
