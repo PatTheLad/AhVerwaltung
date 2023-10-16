@@ -5,7 +5,7 @@
 
 <PageTitle>Rückgabeformulare</PageTitle>
 
-<RadzenDataGrid Data="@dataRückgabe" TItem="Model.Rückgabeformular" AllowPaging="true" PageSize="20" AllowSorting="true" AllowFiltering="true" AllowColumnResize="true"
+<RadzenDataGrid @ref=rückgabeGrid Data="@dataRückgabe" TItem="Model.Rückgabeformular" AllowPaging="true" PageSize="20" AllowSorting="true" AllowFiltering="true" AllowColumnResize="true"
                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Simple">
     <EmptyTemplate>
         <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem; height:100%">No records to display.</p>
@@ -20,23 +20,46 @@
         </RadzenRow>
     </HeaderTemplate>
     <Columns>
-        <RadzenDataGridColumn TItem="Model.Rückgabeformular" Property="RückgabeFormularNr" Title="RückgabeformularNr" />
+        <RadzenDataGridColumn TItem="Model.Rückgabeformular" Property="RückgabeFormularNr" Title="RückgabeformularNr">
+            <EditTemplate Context="rückgabe">
+                <RadzenNumeric @bind-Value=rückgabe.RückgabeFormularNr Style="width:100%; display: block" Name="Rückgabeformular" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="Model.Rückgabeformular" Property="Anhänger.Kennzeichen" Title="Anhänger">
             <Template>
-                <RadzenButton Variant="Variant.Text" Style="width:100%; display:block" Text=@context.RückgabeFormularNr.ToString() ButtonStyle="ButtonStyle.Secondary" />
+                <RadzenButton Variant="Variant.Text" Style="width:100%; display:block" Text=@context.Anhänger.Kennzeichen ButtonStyle="ButtonStyle.Secondary" />
             </Template>
+            <EditTemplate Context="rückgabe">
+                <RadzenTextBox @bind-Value=rückgabe.Anhänger.Kennzeichen Style="width:100%; display: block" Name="Anhänger" />
+            </EditTemplate>
         </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="Model.Rückgabeformular" Property="Vertrag.VertragsNr" Title="Vertragsnr">
             <Template>
                 <RadzenButton Variant="Variant.Text" Style="width:100%; display:block" Text=@context.Vertrag.VertragsNr.ToString() ButtonStyle="ButtonStyle.Secondary" />
             </Template>
+            <EditTemplate Context="rückgabe">
+                <RadzenNumeric @bind-Value=rückgabe.Vertrag.VertragsNr Style="width:100%; display: block" Name="VartragsNr" />
+            </EditTemplate>
         </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="Model.Rückgabeformular" Property="Vertragskunden.Kurzname" Title="Vertragskunden">
             <Template>
                 <RadzenButton Variant="Variant.Text" Style="width:100%; display:block" Text=@context.Vertrag.Kdnr.ToString() ButtonStyle="ButtonStyle.Secondary" />
             </Template>
+            <EditTemplate Context="rückgabe">
+                <RadzenNumeric @bind-Value=rückgabe.Vertrag.Kdnr Style="width:100%; display: block" Name="Rückgabeformular" />
+            </EditTemplate>
         </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="Model.Rückgabeformular" Property="Austrittsdatum" Title="Austrittsdatum" FormatString="{0:d}"></RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Model.Rückgabeformular" Context="rückgabe" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" Width="156px">
+            <Template Context="rückgabe">
+                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(args => EditRow(rückgabe))" @onclick:stopPropagation="true" />
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(rückgabe))" @onclick:stopPropagation="true" />
+            </Template>
+            <EditTemplate Context="rückgabe">
+                <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@((args) => SaveRow(rückgabe))" />
+                <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@((args) => CancelEdit(rückgabe))" />
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(rückgabe))" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
     </Columns>
 </RadzenDataGrid>
 
@@ -75,7 +98,51 @@
                 <RadzenButton ButtonStyle="ButtonStyle.Success" Click="ds.Close" Icon="note_add" Text="Bestätigen" />
             </RadzenStack>
         </RadzenColumn>
-    </div>, new DialogOptions());
+    </div>
+    , new DialogOptions());
     }
+
+    RadzenDataGrid<Rückgabeformular> rückgabeGrid;
+
+    Rückgabeformular rueckgabeToInsert;
+    Rückgabeformular rueckgabeToUpdate;
+
+    void Reset()
+    {
+        rueckgabeToInsert = null;
+        rueckgabeToUpdate = null;
+    }
+
+    async Task EditRow(Rückgabeformular rückgabe)
+    {
+        rueckgabeToUpdate = rückgabe;
+        await rückgabeGrid.EditRow(rückgabe);
+    }
+
+    async Task SaveRow(Rückgabeformular rückgabe)
+    {
+        await rückgabeGrid.UpdateRow(rückgabe);
+    }
+
+    void CancelEdit(Rückgabeformular rückgabe)
+    {
+        Reset();
+
+        rückgabeGrid.CancelEditRow(rückgabe);
+    }
+
+    async Task DeleteRow(Rückgabeformular rückgabe)
+    {
+        Reset();
+        rückgabeGrid.CancelEditRow(rückgabe);
+        await rückgabeGrid.Reload();
+    }
+
+    async Task InsertRow()
+    {
+        rueckgabeToInsert = new Rückgabeformular();
+        await rückgabeGrid.InsertRow(rueckgabeToInsert);
+    }
+}
 
 }
