@@ -21,9 +21,22 @@
     </HeaderTemplate>
     <Columns>
         <RadzenDataGridColumn TItem="Model.Rückgabeformular" Property="RückgabeFormularNr" Title="RückgabeformularNr" />
-        <RadzenDataGridColumn TItem="Model.Rückgabeformular" Property="Anhänger.Kennzeichen" Title="Anhänger" />
-        <RadzenDataGridColumn TItem="Model.Rückgabeformular" Property="Rückgabeformular.RückgabeFormularNr" Title="Vertragsnr" />
-        <RadzenDataGridColumn TItem="Model.Rückgabeformular" Property="Vertragskunden.Kurzname" Title="Vertragskunden" />
+        <RadzenDataGridColumn TItem="Model.Rückgabeformular" Property="Anhänger.Kennzeichen" Title="Anhänger">
+            <Template>
+                <RadzenButton Variant="Variant.Text" Style="width:100%; display:block" Text=@context.RückgabeFormularNr.ToString() ButtonStyle="ButtonStyle.Secondary" />
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Model.Rückgabeformular" Property="Vertrag.VertragsNr" Title="Vertragsnr">
+            <Template>
+                <RadzenButton Variant="Variant.Text" Style="width:100%; display:block" Text=@context.Vertrag.VertragsNr.ToString() ButtonStyle="ButtonStyle.Secondary" />
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Model.Rückgabeformular" Property="Vertragskunden.Kurzname" Title="Vertragskunden">
+            <Template>
+                <RadzenButton Variant="Variant.Text" Style="width:100%; display:block" Text=@context.Vertrag.Kdnr.ToString() ButtonStyle="ButtonStyle.Secondary" />
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Model.Rückgabeformular" Property="Austrittsdatum" Title="Austrittsdatum" FormatString="{0:d}"></RadzenDataGridColumn>
     </Columns>
 </RadzenDataGrid>
 
@@ -34,7 +47,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        foreach(Rückgabeformular rückgabe in RückgabeformularData.GetRückgabeformular())
+        foreach (Rückgabeformular rückgabe in RückgabeformularData.GetRueckgabeformular(12))
         {
             dataRückgabe.Add(rückgabe);
         }
