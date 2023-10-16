@@ -6,5 +6,7 @@
         public Anhänger Anhänger { get; set; }
         public Vertrag Vertrag { get; set; }
         public Kunden Vertragskunden { get; set; }
+        public DateTime Austrittsdatum { get; set; }
     }
 }
+
