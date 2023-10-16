@@ -8,3 +8,4 @@
         public Kunden Vertragskunden { get; set; }
     }
 }
+

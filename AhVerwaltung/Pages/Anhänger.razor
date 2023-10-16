@@ -4,7 +4,7 @@
 
 <PageTitle>Anhänger</PageTitle>
 
-<RadzenDataGrid Data="@anhängerListe" TItem="Model.Anhänger" AllowPaging="true" PageSize="20" AllowSorting="true" AllowFiltering="true" AllowColumnResize="true"
+<RadzenDataGrid @ref=dataGrid Data="@anhängerListe" TItem="Model.Anhänger" AllowPaging="true" PageSize="20" AllowSorting="true" AllowFiltering="true" AllowColumnResize="true"
             FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Simple">
     <EmptyTemplate>
         <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem; height:100%">No records to display.</p>
@@ -19,40 +19,104 @@
         </RadzenRow>
     </HeaderTemplate>
     <Columns>
-        <RadzenDataGridColumn TItem="Model.Anhänger" Property="Marke" Title="Marke" />
-        <RadzenDataGridColumn TItem="Model.Anhänger" Property="Modell" Title="Modell" />
-        <RadzenDataGridColumn TItem="Model.Anhänger" Property="Kennzeichen" Title="Kennzeichen" />
+        <RadzenDataGridColumn TItem="Model.Anhänger" Property="Marke" Title="Marke">
+            <EditTemplate Context="anhänger">
+                <RadzenTextBox @bind-Value=anhänger.Marke Style="width:100%; display:block" Name="Marke" />
+                <RadzenRequiredValidator Text="Marke muss gesetzt sein" Component="Marke" Popup="true" />
+            </EditTemplate>
+            </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Model.Anhänger" Property="Modell" Title="Modell" >
+            <EditTemplate Context="anhänger">
+                <RadzenTextBox @bind-Value=anhänger.Modell Style="width:100%; display:block" Name="Modell" />
+                <RadzenRequiredValidator Text="Modell muss gesetzt sein" Component="Modell" Popup="true" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Model.Anhänger" Property="Kennzeichen" Title="Kennzeichen" >
+            <EditTemplate Context="anhänger">
+                <RadzenTextBox @bind-Value=anhänger.Kennzeichen Style="width:100%; display:block" Name="Kennzeichen" />
+                <RadzenRequiredValidator Text="Kennzeichen muss gesetzt sein" Component="Kennzeichen" Popup="true" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Model.Anhänger" Context="anhänger" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" Width="156px">
+            <Template Context="anhänger">
+                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(args => EditRow(anhänger))" @onclick:stopPropagation="true" />
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(anhänger))"  @onclick:stopPropagation="true" />
+            </Template>
+            <EditTemplate Context="anhänger">
+                <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@((args) => SaveRow(anhänger))" />
+                <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@((args) => CancelEdit(anhänger))" />
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(anhänger))" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
     </Columns>
 </RadzenDataGrid>
 
 @code {
     private List<Model.Anhänger> anhängerListe = new();
+    private RadzenDataGrid<Model.Anhänger>? dataGrid;
 
     protected override async Task OnInitializedAsync()
     {
-        anhängerListe = AnhängerData.GetAnhänger();
+        anhängerListe = AnhängerData.GetAnhänger(10);
         await Task.CompletedTask;
     }
 
     private async Task NeuerAnhänger()
     {
+        Model.Anhänger tmpAnhänger = new();
         await DialogService.OpenAsync("Neuer Anhänger", ds =>
         @<div>
         <RadzenColumn Size="12" SizeSM="6">
             <RadzenStack>
                 <RadzenFormField Text="Marke">
-                    <RadzenTextBox Value="Obi" Style="width: 100%;" />
+                    <RadzenTextBox Style="width: 100%;" @bind-Value=tmpAnhänger.Marke />
                 </RadzenFormField>
                 <RadzenFormField Text="Modell">
-                    <RadzenTextBox Value="P123" Style="width: 100%;" />
+                    <RadzenTextBox Style="width: 100%;" @bind-Value=tmpAnhänger.Modell />
                 </RadzenFormField>
                 <RadzenFormField Text="Kennzeichen">
-                    <RadzenTextBox Value="OE-AA-123" Style="width: 100%;" />
+                    <RadzenTextBox Style="width: 100%;" @bind-Value=tmpAnhänger.Kennzeichen />
                 </RadzenFormField>
-                <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="note_add" Text="Hinzufügen" Click="ds.Close" />
+                <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="note_add" Text="Hinzufügen" Click="(()=> AddAnhänger(tmpAnhänger))" />
             </RadzenStack>
         </RadzenColumn>
     </div>
     , new DialogOptions());
+    }
+
+    private void AddAnhänger(Model.Anhänger tmpAnhänger) 
+    {
+        anhängerListe.Add(tmpAnhänger);
+        dataGrid!.Reload();
+        DialogService.Close();
+    }
+
+    private async Task EditRow(Model.Anhänger anhänger)
+    {
+        await dataGrid!.EditRow(anhänger);
+    }
+
+      private void CancelEdit(Model.Anhänger anhänger)
+    {
+        dataGrid!.CancelEditRow(anhänger);
+    }
+
+    private async Task DeleteRow(Model.Anhänger anhänger)
+    {
+        if (anhängerListe.Contains(anhänger))
+        {
+            anhängerListe.Remove(anhänger);
+            await dataGrid!.Reload();
+        }
+        else
+        {
+            dataGrid!.CancelEditRow(anhänger);
+            await dataGrid!.Reload();
+        }
+    }
+
+    private async Task SaveRow(Model.Anhänger anhänger)
+    {
+        await dataGrid!.UpdateRow(anhänger);
     }
 }
