@@ -3,8 +3,8 @@
 
 <PageTitle>Kunden</PageTitle>
 
-<RadzenDataGrid Data="@dataKunden" TItem="Model.Kunden" AllowPaging="true" PageSize="20" AllowSorting="true" AllowFiltering="true" AllowColumnResize="true"
-                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Simple">
+<RadzenDataGrid Data="@dataKunden" @ref="ordersGrid" TItem="Model.Kunden" AllowPaging="true" PageSize="20" AllowSorting="true" AllowFiltering="true" AllowColumnResize="true"
+                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Simple" >
     <EmptyTemplate>
         <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem; height:100%">No records to display.</p>
     </EmptyTemplate>
@@ -23,10 +23,71 @@
         <RadzenDataGridColumn TItem="Model.Kunden" Property="Vorname" Title="Vorname" />
         <RadzenDataGridColumn TItem="Model.Kunden" Property="Nachname" Title="Nachname" />
         <RadzenDataGridColumn TItem="Model.Kunden" Property="Geburtsdatum" Title="Geburtsdatum" FormatString="{0:d}"/>
+                <RadzenDataGridColumn TItem="Model.Kunden" Context="order" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" Width="156px">
+            <Template Context="order">
+                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(args => EditRow(order))" @onclick:stopPropagation="true">
+                </RadzenButton>
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(order))"  @onclick:stopPropagation="true">
+                </RadzenButton>
+            </Template>
+            <EditTemplate Context="order">
+                <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@((args) => SaveRow(order))">
+                </RadzenButton>
+                <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@((args) => CancelEdit(order))">
+                </RadzenButton>
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(order))">
+                </RadzenButton>
+            </EditTemplate>
+        </RadzenDataGridColumn>
     </Columns>
 </RadzenDataGrid>
 
 @code {
+    Model.Kunden orderToInsert;
+    Model.Kunden orderToUpdate;
+    RadzenDataGrid<Model.Kunden> ordersGrid;
+    IEnumerable<Model.Kunden> orders;
+
+    void Reset()
+    {
+        orderToInsert = null;
+        orderToUpdate = null;
+    }
+    async Task EditRow(Model.Kunden kunde)
+    {
+        orderToUpdate = kunde;
+        await ordersGrid.EditRow(kunde);
+    }
+
+     async Task DeleteRow(Model.Kunden order)
+    {
+        Reset();
+
+        if (orders.Contains(order))
+        {
+
+            await ordersGrid.Reload();
+        }
+        else
+        {
+            ordersGrid.CancelEditRow(order);
+            await ordersGrid.Reload();
+        }
+    }
+
+     async Task SaveRow(Model.Kunden order)
+    {
+        await ordersGrid.UpdateRow(order);
+    }
+
+     void CancelEdit(Model.Kunden order)
+    {
+        Reset();
+
+        ordersGrid.CancelEditRow(order);
+
+    }
+
     private List<Model.Kunden> dataKunden = new();
     private string[] kunden = new string[] { "Test", "Obama", "Pietsch", "Bill Gates", "Mark Zuck", "Cahrl Mags" };
 
@@ -63,4 +124,5 @@
         </RadzenColumn>
     </div>, new DialogOptions());
     }
+
 }
