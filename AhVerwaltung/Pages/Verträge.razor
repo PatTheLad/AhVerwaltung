@@ -99,7 +99,8 @@
     {
         await DialogService.OpenAsync("Neuer Vertrag", ds =>
         @<div>
-            <RadzenFormField Text="Vertrags Nr" Style="width:100%;">
+        <RadzenStack>
+        <RadzenFormField Text="Vertrags Nr" Style="width:100%;">
                 <RadzenTextBox Disabled=true Value="40" Style="width:100%;" />
             </RadzenFormField>
             <RadzenFormField Text="Kennzeichen" Style="width:100%;">
@@ -117,6 +118,9 @@
             <RadzenFormField Text="Preis" Style="width:100%;">
                 <RadzenNumeric Style="width:100%;" TValue="int"/>
             </RadzenFormField>
+            <RadzenButton Style="width:100%;" ButtonStyle="ButtonStyle.Success" Click="ds.Close" Icon="note_add" Text="Vertrag hinzufügen" />
+        </RadzenStack>
+            
     </div>
     , new DialogOptions());
     }

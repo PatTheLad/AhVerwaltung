@@ -5,6 +5,7 @@
 
 <RadzenCard Style="height:25%">
     <ApexChart TItem="Summen"
+            Options=options
            Title="Verträge abgeschlossen" Height="@("100%")" Width="@("100%")">
         <ApexPointSeries TItem="Summen"
                 Items="liste"
@@ -17,6 +18,7 @@
 </RadzenCard>
 <RadzenCard Style="height:25%">
     <ApexChart TItem="Summen"
+                Options=options2
            Title="Rückgabeformulare" Height="@("100%")" Width="@("100%")">
         <ApexPointSeries TItem="Summen"
                 Items="liste"
@@ -30,6 +32,7 @@
 <RadzenRow Gap="0" Style="height:50%">
     <RadzenCard Style="width:50%; height:100%">
         <ApexChart TItem="Summen" XAxisType=XAxisType.Category
+                    Options=options3
                Title="Umsatz" Height="@("100%")" Width="@("100%")">
             <ApexPointSeries TItem="Summen"
                     Items="umsätze"
@@ -42,6 +45,7 @@
     </RadzenCard>
     <RadzenCard Style="width:50%; height:100%">
         <ApexChart TItem="Summen"
+                    Options=options4
                Title="Kapazitäten" Height="@("100%")" Width="@("100%")">
             <ApexPointSeries TItem="Summen"
                     Items="kapazitäten"
@@ -72,6 +76,11 @@
         public int sum { get; set; }
     }
 
+    private ApexChartOptions<Summen> options;
+    private ApexChartOptions<Summen> options2;
+    private ApexChartOptions<Summen> options3;
+    private ApexChartOptions<Summen> options4;
+
     protected override void OnInitialized()
     {
         VerträgeData data = new();
@@ -85,6 +94,39 @@
             kapazitäten.Add(new Summen { year = tmpYear, sum = rndm.Next(30, 35)});
         }
         umsätze.OrderBy(x=> x.year);
+
+         options = new ApexChartOptions<Summen>
+            {
+                Theme = new Theme
+                {
+                    Mode = Mode.Dark,
+                    Palette = PaletteType.Palette1
+                }
+            };
+        options2 = new ApexChartOptions<Summen>
+            {
+                Theme = new Theme
+                {
+                    Mode = Mode.Dark,
+                    Palette = PaletteType.Palette1
+                }
+            };
+        options3 = new ApexChartOptions<Summen>
+            {
+                Theme = new Theme
+                {
+                    Mode = Mode.Dark,
+                    Palette = PaletteType.Palette1
+                }
+            };
+        options4 = new ApexChartOptions<Summen>
+            {
+                Theme = new Theme
+                {
+                    Mode = Mode.Dark,
+                    Palette = PaletteType.Palette1
+                }
+            };
         base.OnInitialized();
     }
 
