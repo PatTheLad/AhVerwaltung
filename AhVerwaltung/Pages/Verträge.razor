@@ -6,7 +6,7 @@
 <PageTitle>Anhängerverwaltung</PageTitle>
 
 
-<RadzenDataGrid Style="height:100%" Data="@dataVerträge" TItem="Vertrag" AllowPaging="true" PageSize="20" AllowSorting="true" AllowFiltering="true" AllowColumnResize="true"
+<RadzenDataGrid @ref="dataGrid" Style="height:100%" Data="@dataVerträge" TItem="Vertrag" AllowPaging="true" PageSize="20" AllowSorting="true" AllowFiltering="true" AllowColumnResize="true"
             FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Simple">
     <EmptyTemplate>
         <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem; height:100%">No records to display.</p>
@@ -21,21 +21,63 @@
         </RadzenRow>
     </HeaderTemplate>
     <Columns>
-        <RadzenDataGridColumn TItem="Vertrag" Property="VertragsNr" Title="VertragsNr" />
+        <RadzenDataGridColumn TItem="Vertrag" Property="VertragsNr" Title="VertragsNr">
+            <EditTemplate Context="verträge">
+                <RadzenNumeric @bind-Value="verträge.VertragsNr" Style="width:100%; display: block;" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="Vertrag" Property="Kennzeichen" Title="Kennzeichen">
             <Template>
                 <RadzenButton Variant="Variant.Text" Style="width:100%; display:block" Text=@context.Kennzeichen ButtonStyle="ButtonStyle.Secondary" />
             </Template>
+            <EditTemplate Context="verträge">
+                <RadzenTextBox @bind-Value="verträge.Kennzeichen" Style="width:100%; display: block;" />
+            </EditTemplate>
         </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="Vertrag" Property="RückgabeformularNr" Title="RückgabeformularNr" />
+        <RadzenDataGridColumn TItem="Vertrag" Property="RückgabeformularNr" Title="RückgabeformularNr">
+            <EditTemplate Context="verträge">
+                <RadzenNumeric @bind-Value="verträge.RückgabeformularNr" Style="width:100%; display: block;" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="Vertrag" Property="KurzName" Title="KurzName" >
             <Template>
                 <RadzenButton Variant="Variant.Text" Style="width:100%; display:block" Text=@context.KurzName ButtonStyle="ButtonStyle.Secondary" />
             </Template>
+            <EditTemplate Context="verträge">
+                <RadzenNumeric @bind-Value="verträge.KurzName" Style="width:100%; display: block;" />
+            </EditTemplate>
         </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="Vertrag" Property="AbschlussDatum" Title="AbschlussDatum" FormatString="{0:d}"/>
-        <RadzenDataGridColumn TItem="Vertrag" Property="Vertragsdauer" Title="Vertragsdauer in Tagen"/>
-        <RadzenDataGridColumn TItem="Vertrag" Property="Preis" Title="Preis" FormatString="{0:c}"/>
+        <RadzenDataGridColumn TItem="Vertrag" Property="AbschlussDatum" Title="AbschlussDatum" FormatString="{0:d}">
+            <EditTemplate Context="verträge">
+                <RadzenDatePicker @bind-Value="verträge.AbschlussDatum" Style="width:100%; display: block;" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Vertrag" Property="Vertragsdauer" Title="Vertragsdauer in Tagen">
+            <EditTemplate Context="verträge">
+                <RadzenNumeric @bind-Value="verträge.Vertragsdauer" Style="width:100%; display: block;" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Vertrag" Property="Preis" Title="Preis" FormatString="{0:c}">
+            <EditTemplate Context="verträge">
+                <RadzenNumeric @bind-Value="verträge.Preis" Style="width:100%; display: block;" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Vertrag" Context="order" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" Width="156px">
+            <Template Context="order">
+                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(args => EditRow(order))" @onclick:stopPropagation="true">
+                </RadzenButton>
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(order))" >
+                </RadzenButton>
+            </Template>
+            <EditTemplate Context="order">
+                <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@((args) => SaveRow(order))">
+                </RadzenButton>
+                <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@((args) => CancelEdit(order))">
+                </RadzenButton>
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(order))">
+                </RadzenButton>
+            </EditTemplate>
+        </RadzenDataGridColumn>
     </Columns>
 </RadzenDataGrid>
 
@@ -43,7 +85,9 @@
 @code{
     private List<Vertrag> dataVerträge = new();
     private string selectedKunde = "Test";
-
+    private RadzenDataGrid<Vertrag> dataGrid;
+    private Vertrag vertragToInsert;
+    private Vertrag vertragToUpdate;
     protected override async Task OnInitializedAsync()
     {
         VerträgeData verträgeData = new();
@@ -58,12 +102,80 @@
             <RadzenFormField Text="Vertrags Nr" Style="width:100%;">
                 <RadzenTextBox Disabled=true Value="40" Style="width:100%;" />
             </RadzenFormField>
-            <RadzenFormField Text="Anhänger" Style="width:100%;">
+            <RadzenFormField Text="Kennzeichen" Style="width:100%;">
                 <RadzenTextBox Style="width:100%;" />
             </RadzenFormField>
-            <RadzenFormField Text="Kunden" Style="width:100%;">
+            <RadzenFormField Text="KurzName" Style="width:100%;">
                 <RadzenTextBox Style="width:100%;" />
             </RadzenFormField>
-        </div>, new DialogOptions());
+            <RadzenFormField Text="AbschlussDatum" Style="width:100%;">
+                <RadzenDatePicker Style="width:100%;" TValue="DateTime"/>
+            </RadzenFormField>
+            <RadzenFormField Text="Vertragsdauer" Style="width:100%;">
+                <RadzenNumeric Style="width:100%;" TValue="int"/>
+            </RadzenFormField>
+            <RadzenFormField Text="Preis" Style="width:100%;">
+                <RadzenNumeric Style="width:100%;" TValue="int"/>
+            </RadzenFormField>
+    </div>
+    , new DialogOptions());
+    }
+
+    async Task EditRow(Vertrag vetrag)
+    {
+        vertragToUpdate = vetrag;
+        await dataGrid.EditRow(vetrag);
+    }
+
+    void OnUpdateRow(Vertrag vetrag)
+    {
+        Reset();
+
+    }
+
+    async Task SaveRow(Vertrag vetrag)
+    {
+        await dataGrid.UpdateRow(vetrag);
+    }
+
+    void CancelEdit(Vertrag vetrag)
+    {
+        Reset();
+
+        dataGrid.CancelEditRow(vetrag);
+    }
+
+    async Task DeleteRow(Vertrag vetrag)
+    {
+        Reset();
+        dataVerträge.Remove(vetrag);
+        if (dataVerträge.Contains(vetrag))
+        {
+
+            await dataGrid.Reload();
+        }
+        else
+        {
+            dataGrid.CancelEditRow(vetrag);
+            await dataGrid.Reload();
+        }
+    }
+
+    async Task InsertRow()
+    {
+        vertragToInsert = new Vertrag();
+        await dataGrid.InsertRow(vertragToInsert);
+    }
+
+    void OnCreateRow(Vertrag vetrag)
+    {
+        
+        vertragToInsert = null;
+    }
+
+    void Reset()
+    {
+        vertragToInsert = null;
+        vertragToUpdate = null;
     }
 }
