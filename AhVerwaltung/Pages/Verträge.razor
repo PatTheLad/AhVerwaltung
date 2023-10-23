@@ -6,7 +6,7 @@
 <PageTitle>Anhängerverwaltung</PageTitle>
 
 
-<RadzenDataGrid Data="@dataVerträge" TItem="Vertrag" AllowPaging="true" PageSize="20" AllowSorting="true" AllowFiltering="true" AllowColumnResize="true"
+<RadzenDataGrid Style="height:100%" Data="@dataVerträge" TItem="Vertrag" AllowPaging="true" PageSize="20" AllowSorting="true" AllowFiltering="true" AllowColumnResize="true"
             FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Simple">
     <EmptyTemplate>
         <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem; height:100%">No records to display.</p>
@@ -22,9 +22,17 @@
     </HeaderTemplate>
     <Columns>
         <RadzenDataGridColumn TItem="Vertrag" Property="VertragsNr" Title="VertragsNr" />
-        <RadzenDataGridColumn TItem="Vertrag" Property="AnhängerNr" Title="AnhängerNr" />
+        <RadzenDataGridColumn TItem="Vertrag" Property="Kennzeichen" Title="Kennzeichen">
+            <Template>
+                <RadzenButton Variant="Variant.Text" Style="width:100%; display:block" Text=@context.Kennzeichen ButtonStyle="ButtonStyle.Secondary" />
+            </Template>
+        </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="Vertrag" Property="RückgabeformularNr" Title="RückgabeformularNr" />
-        <RadzenDataGridColumn TItem="Vertrag" Property="Kdnr" Title="Kdnr" />
+        <RadzenDataGridColumn TItem="Vertrag" Property="KurzName" Title="KurzName" >
+            <Template>
+                <RadzenButton Variant="Variant.Text" Style="width:100%; display:block" Text=@context.KurzName ButtonStyle="ButtonStyle.Secondary" />
+            </Template>
+        </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="Vertrag" Property="AbschlussDatum" Title="AbschlussDatum" FormatString="{0:d}"/>
         <RadzenDataGridColumn TItem="Vertrag" Property="Vertragsdauer" Title="Vertragsdauer in Tagen"/>
         <RadzenDataGridColumn TItem="Vertrag" Property="Preis" Title="Preis" FormatString="{0:c}"/>
