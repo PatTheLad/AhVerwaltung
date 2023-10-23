@@ -5,7 +5,7 @@
 <PageTitle>Anhänger</PageTitle>
 
 <RadzenDataGrid @ref=dataGrid Data="@anhängerListe" TItem="Model.Anhänger" AllowPaging="true" PageSize="20" AllowSorting="true" AllowFiltering="true" AllowColumnResize="true"
-            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Simple">
+            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Simple" Style="height: 100%;" >
     <EmptyTemplate>
         <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem; height:100%">No records to display.</p>
     </EmptyTemplate>
@@ -37,6 +37,24 @@
                 <RadzenRequiredValidator Text="Kennzeichen muss gesetzt sein" Component="Kennzeichen" Popup="true" />
             </EditTemplate>
         </RadzenDataGridColumn>
+         <RadzenDataGridColumn TItem="Model.Anhänger" Property="Länge" Title="Länge" >
+            <EditTemplate Context="anhänger">
+                <RadzenNumeric @bind-Value=anhänger.Länge Style="width:100%; display:block" Name="Länge" />
+                <RadzenRequiredValidator Text="Länge muss gesetzt sein" Component="Länge" Popup="true" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Model.Anhänger" Property="Breite" Title="Breite" >
+            <EditTemplate Context="anhänger">
+                <RadzenNumeric @bind-Value=anhänger.Breite Style="width:100%; display:block" Name="Breite" />
+                <RadzenRequiredValidator Text="Breite muss gesetzt sein" Component="Breite" Popup="true" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Model.Anhänger" Property="Höhe" Title="Höhe" >
+            <EditTemplate Context="anhänger">
+                <RadzenNumeric @bind-Value=anhänger.Höhe Style="width:100%; display:block" Name="Höhe" />
+                <RadzenRequiredValidator Text="Länge muss gesetzt sein" Component="Höhe" Popup="true" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="Model.Anhänger" Context="anhänger" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" Width="156px">
             <Template Context="anhänger">
                 <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(args => EditRow(anhänger))" @onclick:stopPropagation="true" />
@@ -66,21 +84,30 @@
         Model.Anhänger tmpAnhänger = new();
         await DialogService.OpenAsync("Neuer Anhänger", ds =>
         @<div>
-        <RadzenColumn Size="12" SizeSM="6">
-            <RadzenStack>
-                <RadzenFormField Text="Marke">
-                    <RadzenTextBox Style="width: 100%;" @bind-Value=tmpAnhänger.Marke />
-                </RadzenFormField>
-                <RadzenFormField Text="Modell">
-                    <RadzenTextBox Style="width: 100%;" @bind-Value=tmpAnhänger.Modell />
-                </RadzenFormField>
-                <RadzenFormField Text="Kennzeichen">
-                    <RadzenTextBox Style="width: 100%;" @bind-Value=tmpAnhänger.Kennzeichen />
-                </RadzenFormField>
-                <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="note_add" Text="Hinzufügen" Click="(()=> AddAnhänger(tmpAnhänger))" />
-            </RadzenStack>
-        </RadzenColumn>
-    </div>
+            <RadzenColumn Size="12" SizeSM="6">
+                <RadzenStack>
+                    <RadzenFormField Text="Marke">
+                        <RadzenTextBox Style="width: 100%;" @bind-Value=tmpAnhänger.Marke />
+                    </RadzenFormField>
+                    <RadzenFormField Text="Modell">
+                        <RadzenTextBox Style="width: 100%;" @bind-Value=tmpAnhänger.Modell />
+                    </RadzenFormField>
+                    <RadzenFormField Text="Kennzeichen">
+                        <RadzenTextBox Style="width: 100%;" @bind-Value=tmpAnhänger.Kennzeichen />
+                    </RadzenFormField>
+                    <RadzenFormField Text="Länge">
+                        <RadzenNumeric Style="width: 100%;" @bind-Value=tmpAnhänger.Länge />
+                    </RadzenFormField>
+                    <RadzenFormField Text="Breite">
+                        <RadzenNumeric Style="width: 100%;" @bind-Value=tmpAnhänger.Breite />
+                    </RadzenFormField>
+                    <RadzenFormField Text="Höhe">
+                        <RadzenNumeric Style="width: 100%;" @bind-Value=tmpAnhänger.Höhe />
+                    </RadzenFormField>
+                    <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="note_add" Text="Hinzufügen" Click="(()=> AddAnhänger(tmpAnhänger))" />
+                </RadzenStack>
+            </RadzenColumn>
+        </div>
     , new DialogOptions());
     }
 
