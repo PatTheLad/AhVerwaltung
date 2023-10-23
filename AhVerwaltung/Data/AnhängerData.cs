@@ -14,7 +14,10 @@
                 { 
                     Kennzeichen = $"{GenerateRandomString(2)}-{GenerateRandomString(2)}-{rndm.Next(1, 999)}",
                     Marke = _marken[rndm.Next(0, 3)], 
-                    Modell = $"{GenerateRandomString(1)}{rndm.Next(10, 999)}" 
+                    Modell = $"{GenerateRandomString(1)}{rndm.Next(10, 999)}",
+                    Länge = (float?)(rndm.Next(1, 2) + Math.Round(rndm.NextSingle(), 2)),
+                    Breite = (float?)(rndm.Next(1, 2) + Math.Round(rndm.NextSingle(), 2)),
+                    Höhe = (float?)(rndm.Next(1, 2) + Math.Round(rndm.NextSingle(), 2)),
                 });
 
             return anhänger;
