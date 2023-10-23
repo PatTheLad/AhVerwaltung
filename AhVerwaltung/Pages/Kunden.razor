@@ -3,7 +3,7 @@
 
 <PageTitle>Kunden</PageTitle>
 
-<RadzenDataGrid Data="@dataKunden" @ref="ordersGrid" TItem="Model.Kunden" AllowPaging="true" PageSize="20" AllowSorting="true" AllowFiltering="true" AllowColumnResize="true"
+<RadzenDataGrid Data="@dataKunden" @ref="ordersGrid" TItem="Model.Kunden" AllowPaging="true" Style="height:100%" PageSize="20" AllowSorting="true" AllowFiltering="true" AllowColumnResize="true"
                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Simple" >
     <EmptyTemplate>
         <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem; height:100%">No records to display.</p>
@@ -18,16 +18,65 @@
         </RadzenRow>
     </HeaderTemplate>
     <Columns>
-        <RadzenDataGridColumn TItem="Model.Kunden" Property="Kdnr" Title="Kdnr" />
-        <RadzenDataGridColumn TItem="Model.Kunden" Property="Kurzname" Title="Kurzname" />
-        <RadzenDataGridColumn TItem="Model.Kunden" Property="Vorname" Title="Vorname" />
-        <RadzenDataGridColumn TItem="Model.Kunden" Property="Nachname" Title="Nachname" />
-        <RadzenDataGridColumn TItem="Model.Kunden" Property="Geburtsdatum" Title="Geburtsdatum" FormatString="{0:d}"/>
+        <RadzenDataGridColumn TItem="Model.Kunden" Property="Kdnr" Title="Kdnr" >
+        <EditTemplate Context="Kunden">
+                <RadzenNumeric @bind-Value=Kunden.Kdnr Style="width:100%; display:block" Name="Marke" />
+                <RadzenRequiredValidator Text="Marke muss gesetzt sein" Component="Marke" Popup="true" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Model.Kunden" Property="Kurzname" Title="Kurzname" >
+         <EditTemplate Context="Kunden">
+                <RadzenTextBox @bind-Value=Kunden.Kurzname Style="width:100%; display:block" Name="Marke" />
+                <RadzenRequiredValidator Text="Marke muss gesetzt sein" Component="Marke" Popup="true" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Model.Kunden" Property="Vorname" Title="Vorname" >
+         <EditTemplate Context="Kunden">
+                <RadzenTextBox @bind-Value=Kunden.Vorname Style="width:100%; display:block" Name="Marke" />
+                <RadzenRequiredValidator Text="Marke muss gesetzt sein" Component="Marke" Popup="true" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Model.Kunden" Property="Nachname" Title="Nachname" >
+         <EditTemplate Context="Kunden">
+                <RadzenTextBox @bind-Value=Kunden.Nachname Style="width:100%; display:block" Name="Marke" />
+                <RadzenRequiredValidator Text="Marke muss gesetzt sein" Component="Marke" Popup="true" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Model.Kunden" Property="Geburtsdatum" Title="Geburtsdatum" FormatString="{0:d}">
+         <EditTemplate Context="Kunden">
+                <RadzenDatePicker @bind-Value=Kunden.Geburtsdatum Style="width:100%; display:block" Name="Marke" />
+                <RadzenRequiredValidator Text="Marke muss gesetzt sein" Component="Marke" Popup="true" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Model.Kunden" Property="persoNr" Title="Personalausweisnummer" >
+         <EditTemplate Context="Kunden">
+                <RadzenTextBox @bind-Value=Kunden.persoNr Style="width:100%; display:block" Name="Marke" />
+                <RadzenRequiredValidator Text="Marke muss gesetzt sein" Component="Marke" Popup="true" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Model.Kunden" Property="FührerscheinNr" Title="Führerscheinnummer" >
+         <EditTemplate Context="Kunden">
+                <RadzenTextBox @bind-Value=Kunden.FührerscheinNr Style="width:100%; display:block" Name="Marke" />
+                <RadzenRequiredValidator Text="Marke muss gesetzt sein" Component="Marke" Popup="true" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Model.Kunden" Property="Email" Title="Email" >
+         <EditTemplate Context="Kunden">
+                <RadzenTextBox @bind-Value=Kunden.Email Style="width:100%; display:block" Name="Marke" />
+                <RadzenRequiredValidator Text="Marke muss gesetzt sein" Component="Marke" Popup="true" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Model.Kunden" Property="TelNr" Title="Telefonnummer" >
+            <EditTemplate Context="Kunden">
+                    <RadzenTextBox @bind-Value=Kunden.TelNr Style="width:100%; display:block" Name="Marke" />
+                    <RadzenRequiredValidator Text="Marke muss gesetzt sein" Component="Marke" Popup="true" />
+                </EditTemplate>
+            </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="Model.Kunden" Context="order" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" Width="156px">
             <Template Context="order">
-                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(args => EditRow(order))" @onclick:stopPropagation="true">
+                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(args => EditRow(order))" >
                 </RadzenButton>
-                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(order))"  @onclick:stopPropagation="true">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(order))"  >
                 </RadzenButton>
             </Template>
             <EditTemplate Context="order">
@@ -53,44 +102,39 @@
         orderToInsert = null;
         orderToUpdate = null;
     }
-    async Task EditRow(Model.Kunden kunde)
+    private async Task EditRow(Model.Kunden kunde)
     {
-        orderToUpdate = kunde;
-        await ordersGrid.EditRow(kunde);
+        await ordersGrid!.EditRow(kunde);
     }
 
-     async Task DeleteRow(Model.Kunden order)
+      private void CancelEdit(Model.Kunden kunde)
     {
-        Reset();
-
-        if (orders.Contains(order))
-        {
-
-            await ordersGrid.Reload();
-        }
-        else
-        {
-            ordersGrid.CancelEditRow(order);
-            await ordersGrid.Reload();
-        }
-    }
-
-     async Task SaveRow(Model.Kunden order)
-    {
-        await ordersGrid.UpdateRow(order);
-    }
-
-     void CancelEdit(Model.Kunden order)
-    {
-        Reset();
-
-        ordersGrid.CancelEditRow(order);
-
+        ordersGrid!.CancelEditRow(kunde);
     }
 
     private List<Model.Kunden> dataKunden = new();
     private string[] kunden = new string[] { "Test", "Obama", "Pietsch", "Bill Gates", "Mark Zuck", "Cahrl Mags" };
 
+    private async Task DeleteRow(Model.Kunden kunde)
+    {
+        if (dataKunden.Contains(kunde))
+        {
+            dataKunden.Remove(kunde);
+            await ordersGrid!.Reload();
+        }
+        else
+        {
+            ordersGrid!.CancelEditRow(kunde);
+            await ordersGrid!.Reload();
+        }
+    }
+
+    private async Task SaveRow(Model.Kunden kunde)
+    {
+        await ordersGrid!.UpdateRow(kunde);
+    }
+
+    
     protected override async Task OnInitializedAsync()
     {
         Data.DataKunden dk = new Data.DataKunden();
@@ -118,6 +162,18 @@
         </RadzenFormField>
          <RadzenFormField Text="Geburtsdatum" Style="width: 100%;">
             <RadzenDatePicker TValue="DateTime" Style="width: 100%;" />
+        </RadzenFormField>
+         <RadzenFormField Text="Personalausweisnummer" Style="width: 100%;">
+            <RadzenTextBox Style="width: 100%;" />
+        </RadzenFormField>
+         <RadzenFormField Text="Führerscheinnummer" Style="width: 100%;">
+            <RadzenTextBox Style="width: 100%;" />
+        </RadzenFormField>
+         <RadzenFormField Text="Email" Style="width: 100%;">
+            <RadzenTextBox Style="width: 100%;" />
+        </RadzenFormField>
+         <RadzenFormField Text="Telefonnummer" Style="width: 100%;">
+            <RadzenTextBox Style="width: 100%;" />
         </RadzenFormField>
          <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="person_add" Text="Kunde hinzufügen" Style="width: 100%;" Click="ds.Close"/>
           </RadzenStack>

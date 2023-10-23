@@ -8,8 +8,8 @@ namespace AhVerwaltung.Data
         public List<Kunden> GetKunden ()
         { 
             List<Kunden> kundenListe = new();
-            kundenListe.Add(new Kunden() { Kdnr = 1, Kurzname = "BGa", Vorname = "Bill", Nachname = "Gates", Geburtsdatum = new DateTime(1969, 07, 12) });
-            kundenListe.Add(new Kunden() { Kdnr = 2, Kurzname = "MZu", Vorname = "Mark", Nachname = "Zuckerberg", Geburtsdatum = new DateTime(1984, 04, 20) });
+            kundenListe.Add(new Kunden() { Kdnr = 1, Kurzname = "BGa", Vorname = "Bill", Nachname = "Gates", Geburtsdatum = new DateTime(1969, 07, 12), persoNr = "0001", FührerscheinNr = "1111", Email = "micro.soft@email.de", TelNr = "015498" });
+            kundenListe.Add(new Kunden() { Kdnr = 2, Kurzname = "MZu", Vorname = "Mark", Nachname = "Zuckerberg", Geburtsdatum = new DateTime(1984, 04, 20), persoNr = "0666", FührerscheinNr = "6660", Email = "Lizard.mann@email.de", TelNr = "01666" });
             kundenListe.Add(new Kunden() { Kdnr = 3, Kurzname = "BOb", Vorname = "Barackus", Nachname = "Obamna", Geburtsdatum = new DateTime(1972, 05, 04) });
             kundenListe.Add(new Kunden() { Kdnr = 4, Kurzname = "CMa", Vorname = "Cahrl", Nachname = "Mahgs", Geburtsdatum = new DateTime(1848, 03, 01) });
             kundenListe.Add(new Kunden() { Kdnr = 5, Kurzname = "JWh", Vorname = "Joe", Nachname = "Who", Geburtsdatum = new DateTime(1990, 09, 06) });
@@ -78,11 +78,14 @@ namespace AhVerwaltung.Data
         public Kunden RandomKunde(int x)
         {
             Random rnd = new Random();
-      
+            String persoNr = rnd.Next(0, 10000).ToString();
+            String führerscheinNr = rnd.Next(0, 10000).ToString();
+            String telNr = "0" + rnd.Next(0, 1000000).ToString();
             String vorname = vornamenListe[rnd.Next(0, vornamenListe.Count())];
             String nachname = nachnamenListe[rnd.Next(0, nachnamenListe.Count())];
+            String email = vorname + "." + nachname + "@email.de";
             String kurzname = vorname.Substring(0, 1) + nachname.Substring(0, 2);
-            Kunden kunde = new Kunden() { Kdnr = x, Kurzname = kurzname, Vorname = vorname, Nachname = nachname, Geburtsdatum = RandomDay() };
+            Kunden kunde = new Kunden() { Kdnr = x, Kurzname = kurzname, Vorname = vorname, Nachname = nachname, Geburtsdatum = RandomDay(), persoNr = persoNr , FührerscheinNr = führerscheinNr, Email = email, TelNr = telNr};
             return kunde;
         }
 
