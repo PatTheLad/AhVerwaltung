@@ -57,7 +57,7 @@
         </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="Model.Anhänger" Context="anhänger" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" Width="156px">
             <Template Context="anhänger">
-                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(args => EditRow(anhänger))" @onclick:stopPropagation="true" />
+                <RadzenButton Icon="edit" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(args => EditRow(anhänger))" @onclick:stopPropagation="true" />
                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(anhänger))"  @onclick:stopPropagation="true" />
             </Template>
             <EditTemplate Context="anhänger">

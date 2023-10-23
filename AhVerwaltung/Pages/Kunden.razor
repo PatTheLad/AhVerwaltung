@@ -74,7 +74,7 @@
             </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="Model.Kunden" Context="order" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" Width="156px">
             <Template Context="order">
-                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(args => EditRow(order))" >
+                <RadzenButton Icon="edit" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(args => EditRow(order))" >
                 </RadzenButton>
                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(order))"  >
                 </RadzenButton>

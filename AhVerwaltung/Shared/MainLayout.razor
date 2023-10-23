@@ -2,18 +2,24 @@
 
 <PageTitle>AhVerwaltung</PageTitle>
 
+<main style="overflow-y:hidden">
+    <RadzenRow Gap="0">
+        <RadzenMenu Style="height:4vh; width:95%">
+             <RadzenMenuItem Text="Home" Icon="home" Path="" />
+            <RadzenMenuItem Text="Verträge" Icon="description" Path="Verträge" />
+            <RadzenMenuItem Text="Kunden" Icon="people" Path="Kunden" />
+            <RadzenMenuItem Text="Anhänger" Icon="drive_eta" Path="Anhänger" />
+            <RadzenMenuItem Text="Rückgabeformulare" Icon="description" Path="Rückgabeformulare" />
+        </RadzenMenu>
+        <RadzenMenu Style="height:4vh; width:5%">
+          <RadzenMenuItem Text="Login" Icon="lock" Path="Login" />
+        </RadzenMenu>
+    </RadzenRow>
+    <div style="height:96vh">
+        @Body
+    </div>
+</main>
 
-<RadzenMenu Style="height:3vh;">
-    <RadzenMenuItem Text="Home" Icon="home" Path="" />
-    <RadzenMenuItem Text="Verträge" Icon="description" Path="Verträge" />
-    <RadzenMenuItem Text="Kunden" Icon="people" Path="Kunden" />
-    <RadzenMenuItem Text="Anhänger" Icon="drive_eta" Path="Anhänger" />
-    <RadzenMenuItem Text="Rückgabeformulare" Icon="description" Path="Rückgabeformulare" />
-    <RadzenMenuItem Text="Login" Icon="lock" Style="float:right" Path="Login" />
-</RadzenMenu>
-<body style="height:97vh">
-    @Body
-</body>
 <RadzenDialog/>
 <RadzenNotification/>
 <RadzenContextMenu/>
