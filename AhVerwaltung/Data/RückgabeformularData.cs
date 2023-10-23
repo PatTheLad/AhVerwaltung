@@ -4,7 +4,6 @@ namespace AhVerwaltung.Data
 {
     public class RückgabeformularData
     {
-
         public static List<Rückgabeformular> GetRueckgabeformular(int anzahl)
         {
             Random rndm = new();
