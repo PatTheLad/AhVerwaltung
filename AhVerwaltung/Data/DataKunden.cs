@@ -10,12 +10,12 @@ namespace AhVerwaltung.Data
             List<Kunden> kundenListe = new();
             kundenListe.Add(new Kunden() { Kdnr = 1, Kurzname = "BGa", Vorname = "Bill", Nachname = "Gates", Geburtsdatum = new DateTime(1969, 07, 12), persoNr = "0001", FührerscheinNr = "1111", Email = "micro.soft@email.de", TelNr = "015498" });
             kundenListe.Add(new Kunden() { Kdnr = 2, Kurzname = "MZu", Vorname = "Mark", Nachname = "Zuckerberg", Geburtsdatum = new DateTime(1984, 04, 20), persoNr = "0666", FührerscheinNr = "6660", Email = "Lizard.mann@email.de", TelNr = "01666" });
-            kundenListe.Add(new Kunden() { Kdnr = 3, Kurzname = "BOb", Vorname = "Barackus", Nachname = "Obamna", Geburtsdatum = new DateTime(1972, 05, 04) });
-            kundenListe.Add(new Kunden() { Kdnr = 4, Kurzname = "CMa", Vorname = "Cahrl", Nachname = "Mahgs", Geburtsdatum = new DateTime(1848, 03, 01) });
-            kundenListe.Add(new Kunden() { Kdnr = 5, Kurzname = "JWh", Vorname = "Joe", Nachname = "Who", Geburtsdatum = new DateTime(1990, 09, 06) });
-            kundenListe.Add(new Kunden() { Kdnr = 6, Kurzname = "JMa", Vorname = "Joe", Nachname = "Mama", Geburtsdatum = new DateTime(2000, 02, 04) });
-            kundenListe.Add(new Kunden() { Kdnr = 7, Kurzname = "DDa", Vorname = "Dreckiger", Nachname = "Dan", Geburtsdatum = new DateTime(1993, 08, 07) });
-            kundenListe.Add(new Kunden() { Kdnr = 8, Kurzname = "SLa", Vorname = "Spitzkopf", Nachname = "Larry", Geburtsdatum = new DateTime(1994, 11, 10) });
+            kundenListe.Add(new Kunden() { Kdnr = 3, Kurzname = "BOb", Vorname = "Barackus", Nachname = "Obamna", Geburtsdatum = new DateTime(1972, 05, 04), persoNr = "1234", FührerscheinNr = "2431", Email = "der.echtr@email.de", TelNr = "0165742" });
+            kundenListe.Add(new Kunden() { Kdnr = 4, Kurzname = "CMa", Vorname = "Cahrl", Nachname = "Mahgs", Geburtsdatum = new DateTime(1848, 03, 01), persoNr = "1848", FührerscheinNr = "1848", Email = "die.revolution@email.de", TelNr = "01848" });
+            kundenListe.Add(new Kunden() { Kdnr = 5, Kurzname = "JWh", Vorname = "Joe", Nachname = "Who", Geburtsdatum = new DateTime(1990, 09, 06), persoNr = "4548", FührerscheinNr = "7545", Email = "joe.who@email.de", TelNr = "017889" });
+            kundenListe.Add(new Kunden() { Kdnr = 6, Kurzname = "JMa", Vorname = "Joe", Nachname = "Mama", Geburtsdatum = new DateTime(2000, 02, 04), persoNr = "4512", FührerscheinNr = "1104", Email = "joe.mama@email.de", TelNr = "014844" });
+            kundenListe.Add(new Kunden() { Kdnr = 7, Kurzname = "DDa", Vorname = "Dreckiger", Nachname = "Dan", Geburtsdatum = new DateTime(1993, 08, 07), persoNr = "4849", FührerscheinNr = "8754", Email = "d.dreckiger@email.de", TelNr = "014884" });
+            kundenListe.Add(new Kunden() { Kdnr = 8, Kurzname = "SLa", Vorname = "Spitzkopf", Nachname = "Larry", Geburtsdatum = new DateTime(1994, 11, 10), persoNr = "8742", FührerscheinNr = "7854", Email = "l.spitzkopf@email.de", TelNr = "0104523" });
             for(int i = 0; i < 30; i++)
             {
                 kundenListe.Add(RandomKunde(9 + i));
