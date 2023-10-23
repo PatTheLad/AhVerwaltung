@@ -70,7 +70,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        foreach (Rückgabeformular rückgabe in RückgabeformularData.GetRueckgabeformular(12))
+        foreach (Rückgabeformular rückgabe in RückgabeformularData.GetRueckgabeformular(50))
         {
             dataRückgabe.Add(rückgabe);
         }
@@ -145,4 +145,3 @@
     }
 }
 
-}
