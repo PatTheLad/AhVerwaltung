@@ -5,7 +5,7 @@
 
 <PageTitle>Rückgabeformulare</PageTitle>
 
-<RadzenDataGrid @ref=rückgabeGrid Data="@dataRückgabe" TItem="Model.Rückgabeformular" AllowPaging="true" PageSize="20" AllowSorting="true" AllowFiltering="true" AllowColumnResize="true"
+<RadzenDataGrid Style="height:100%;" @ref=dataGrid Data="@dataRückgabe" TItem="Model.Rückgabeformular" AllowPaging="true" PageSize="20" AllowSorting="true" AllowFiltering="true" AllowColumnResize="true"
                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Simple">
     <EmptyTemplate>
         <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem; height:100%">No records to display.</p>
@@ -43,7 +43,7 @@
         </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="Model.Rückgabeformular" Property="Vertragskunden.Kurzname" Title="Vertragskunden">
             <Template>
-                <RadzenButton Variant="Variant.Text" Style="width:100%; display:block" Text=@context.Vertrag.Kdnr.ToString() ButtonStyle="ButtonStyle.Secondary" />
+                <RadzenButton Variant="Variant.Text" Style="width:100%; display:block" Text=@context.Vertragskunden.Kurzname ButtonStyle="ButtonStyle.Secondary" />
             </Template>
             <EditTemplate Context="rückgabe">
                 <RadzenNumeric @bind-Value=rückgabe.Vertrag.Kdnr Style="width:100%; display: block" Name="Rückgabeformular" />
@@ -79,6 +79,7 @@
 
     private async Task NeuesRückgabeFormular()
     {
+        Rückgabeformular tmpRückgabe = new();
         await DialogService.OpenAsync("Neues Rückgabeformular", ds =>
     @<div>
         <RadzenColumn Size="12" SizeSM="6">
@@ -102,46 +103,45 @@
     , new DialogOptions());
     }
 
-    RadzenDataGrid<Rückgabeformular> rückgabeGrid;
+    Rückgabeformular rückgabeToInsert;
+    Rückgabeformular rückgabeToUpdate;
+    RadzenDataGrid<Rückgabeformular> dataGrid;
+    IEnumerable<Rückgabeformular> rückgaben;
 
-    Rückgabeformular rueckgabeToInsert;
-    Rückgabeformular rueckgabeToUpdate;
-
-    void Reset()
+    private void AddAnhänger(Rückgabeformular tmpRückgabe)
     {
-        rueckgabeToInsert = null;
-        rueckgabeToUpdate = null;
+        dataRückgabe.Add(tmpRückgabe);
+        dataGrid!.Reload();
+        DialogService.Close();
     }
 
-    async Task EditRow(Rückgabeformular rückgabe)
+    private async Task EditRow(Rückgabeformular rückgabe)
     {
-        rueckgabeToUpdate = rückgabe;
-        await rückgabeGrid.EditRow(rückgabe);
+        await dataGrid!.EditRow(rückgabe);
     }
 
-    async Task SaveRow(Rückgabeformular rückgabe)
+    private void CancelEdit(Rückgabeformular rückgabe)
     {
-        await rückgabeGrid.UpdateRow(rückgabe);
+        dataGrid!.CancelEditRow(rückgabe);
     }
 
-    void CancelEdit(Rückgabeformular rückgabe)
+    private async Task DeleteRow(Rückgabeformular rückgabe)
     {
-        Reset();
-
-        rückgabeGrid.CancelEditRow(rückgabe);
+        if (dataRückgabe.Contains(rückgabe))
+        {
+            dataRückgabe.Remove(rückgabe);
+            await dataGrid!.Reload();
+        }
+        else
+        {
+            dataGrid!.CancelEditRow(rückgabe);
+            await dataGrid!.Reload();
+        }
     }
 
-    async Task DeleteRow(Rückgabeformular rückgabe)
+    private async Task SaveRow(Rückgabeformular rückgabe)
     {
-        Reset();
-        rückgabeGrid.CancelEditRow(rückgabe);
-        await rückgabeGrid.Reload();
-    }
-
-    async Task InsertRow()
-    {
-        rueckgabeToInsert = new Rückgabeformular();
-        await rückgabeGrid.InsertRow(rueckgabeToInsert);
+        await dataGrid!.UpdateRow(rückgabe);
     }
 }
 
