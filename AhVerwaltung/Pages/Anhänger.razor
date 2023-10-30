@@ -19,6 +19,12 @@
         </RadzenRow>
     </HeaderTemplate>
     <Columns>
+        <RadzenDataGridColumn TItem="Model.Anhänger" Property="Id" Title="AnhängerNR">
+            <EditTemplate Context="anhänger">
+                <RadzenNumeric @bind-Value=anhänger.Marke Style="width:100%; display:block" Name="Id" />
+                <RadzenRequiredValidator Text="Id muss gesetzt sein" Component="Id" Popup="true" />
+            </EditTemplate>
+            </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="Model.Anhänger" Property="Marke" Title="Marke">
             <EditTemplate Context="anhänger">
                 <RadzenTextBox @bind-Value=anhänger.Marke Style="width:100%; display:block" Name="Marke" />
@@ -86,6 +92,9 @@
         @<div>
             <RadzenColumn Size="12" SizeSM="6">
                 <RadzenStack>
+                <RadzenFormField Text="AnhängerNr">
+                        <RadzenNumeric Style="width: 100%;" @bind-Value=tmpAnhänger.Id />
+                    </RadzenFormField>
                     <RadzenFormField Text="Marke">
                         <RadzenTextBox Style="width: 100%;" @bind-Value=tmpAnhänger.Marke />
                     </RadzenFormField>

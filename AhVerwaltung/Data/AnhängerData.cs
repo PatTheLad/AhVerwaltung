@@ -12,6 +12,7 @@
             for (int i = 0; i < anzahl; i++)
                 anhänger.Add(new Model.Anhänger() 
                 { 
+                    Id = 1 + i,
                     Kennzeichen = $"{GenerateRandomString(2)}-{GenerateRandomString(2)}-{rndm.Next(1, 999)}",
                     Marke = _marken[rndm.Next(0, 3)], 
                     Modell = $"{GenerateRandomString(1)}{rndm.Next(10, 999)}",

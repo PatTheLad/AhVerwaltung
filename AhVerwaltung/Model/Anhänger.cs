@@ -2,6 +2,7 @@
 {
     public class Anhänger
     {
+        public int Id { get; set; }
         public string? Marke { get; set; }
         public string? Modell { get; set; }
         public string? Kennzeichen { get; set; }
